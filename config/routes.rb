@@ -7,7 +7,11 @@ TwitterClone::Application.routes.draw do
 
   delete "followers/destroy/:id" => "followers#destroy", :as => "followers_destroy"
 
+  
+
   get "tweets/user_tweets" => "tweets#user_tweets", :as => "user_tweets"
+
+  post "tweets/create" => "tweets#create"
 
   devise_for :users
 

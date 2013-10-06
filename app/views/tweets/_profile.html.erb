@@ -1,4 +1,4 @@
-<h2><%= current_user.full_name+" @"+current_user.user_name %></h2>
+<h2><%= current_user.full_name.titleize+" @"+current_user.user_name %></h2>
 <div class="pro span4">
   <ul class="inline">
     <li style="width:80px;text-align: center"><b><%= link_to "Followers #{@followers}", followers_path %></b></li>

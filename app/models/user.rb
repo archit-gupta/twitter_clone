@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :user_name, :full_name
   # attr_accessible :title, :body
 
+  validates_format_of :user_name, :with => /^[A-Za-z\d_]+$/, :message => "can only be alphanumeric with no spaces"
+
   has_many :followers, :dependent => :destroy
   has_many :friends, :through => :followers
 

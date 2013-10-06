@@ -3,6 +3,9 @@
     <p><b>Posted <%= time_ago_in_words(tweet.created_at) %> ago</b></p>
     <p class="tweet_messages"><%= tweet.message %></p>
     <p class="tweet_messages">Posted By <em><%= tweet.user.user_name == current_user.user_name ? "me" : tweet.user.user_name %></em></p>
+    <% if tweet.user.user_name != current_user.user_name %>
+      <div class="retweet btn btn-info btn-small" tweet_id= <%= tweet.id %> ><i class="icon-repeat"></i></div>
+    <% end %>
     <div class="delete_tweet btn btn-danger btn-small" tweet_id= <%= tweet.id %> ><i class="icon-trash"></i></div>
     <hr>
   </div>
@@ -39,5 +42,20 @@
         delete_tweet();
     });
     return false;
+  });
+
+  $('.retweet').click(function(e) {  
+    $this = $(this);
+    var tweet_id = $this.attr("tweet_id");
+    $.ajax({
+        url: "/tweets/create",
+        type: "POST",
+        data: {"tweet_id": tweet_id},
+        dataType: "JSON"
+    }).success(function(data){
+        $('#tweet_message').val("").focus();
+        $('.tweets').prepend("<div class='tweet'><p><b>Posted "+data.time_ago_in_words+" ago</b></p><p class='tweet_messages'>"+data.message+"</p><p class='tweet_messages'>Posted By <em>me</em></p><div class='delete_tweet btn btn-danger btn-small' tweet_id="+data.id+"><i class='icon-trash'></i></div></div><hr>");
+        delete_tweet();
+    });
   });
 </script>

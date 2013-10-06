@@ -20,13 +20,16 @@ class TweetsController < ApplicationController
   end
 
   def user_tweets
-    @tweets = current_user.tweets
+    @tweets = current_user.tweets.order("created_at DESC")
   end
 
   def create
-
-    @tweet = Tweet.new(params[:tweet])
-    @tweet.user_id = current_user.id
+    if params[:tweet].present?
+      @tweet = Tweet.new(params[:tweet]) 
+    else
+      message = Tweet.find(params[:tweet_id]).message
+      @tweet = Tweet.new(:message => message, :user_id => current_user.id)
+    end
     respond_to do |format|
       if @tweet.save
         format.html { redirect_to @tweet, notice: 'Tweet was successfully created.' }
