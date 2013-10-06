@@ -1,0 +1,15 @@
+<div class="container">
+  <%= render :partial => "profile", :tweets => @tweets %>
+  <div class="span6" >
+    <%= simple_form_for @tweet, :url => url_for(:action => 'create', :controller => 'tweets'),
+      :method => 'post' do |f| %>
+      <%= f.input :message, as: :text, :label => "Write a tweet", input_html: { rows: 5, maxlength: 160, style: "width:100%" } %>
+      <%= f.button :submit, :id => "create_tweet" %>
+    <% end %>
+    
+    <div class="tweets">
+     <%= render :partial => "tweet", :tweets => @tweets %>
+    </div>
+  </div>
+
+</div>

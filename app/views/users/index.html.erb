@@ -1,0 +1,26 @@
+<div class="page-header">
+  <h1><%= @heading %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.user_name %></td>
+        <td>
+          <% if current_user.followers.exists?(:friend_id => user.id) %>
+            <%= link_to "UnFollow", followers_destroy_path(user.id), :class => 'btn btn-mini btn-danger', :Style => "color:#fff", :method=> :delete %>
+          <% else %>
+            <%= link_to "Follow", followers_create_path(user.id), :class => 'btn btn-mini btn-primary', :Style => "color:#fff", :method=> :post %>
+          <% end %>
+          
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

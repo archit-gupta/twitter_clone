@@ -1,4 +1,19 @@
 TwitterClone::Application.routes.draw do
+  get "users/index"
+  get "users/followers" => "users#followers", :as => "followers"
+  get "users/following" => "users#following", :as => "following"
+
+  post "followers/create/:id" => "followers#create", :as => "followers_create"
+
+  delete "followers/destroy/:id" => "followers#destroy", :as => "followers_destroy"
+
+  get "tweets/user_tweets" => "tweets#user_tweets", :as => "user_tweets"
+
+  devise_for :users
+
+  resources :tweets
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -48,7 +63,15 @@ TwitterClone::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+
+  devise_scope :user do
+    authenticated :user do
+      root :to => 'tweets#index'
+    end
+    unauthenticated :user do
+      root :to => 'devise/sessions#new'
+    end
+  end
 
   # See how all your routes lay out with "rake routes"
 

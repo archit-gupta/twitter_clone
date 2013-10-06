@@ -1,0 +1,43 @@
+<% @tweets.each do |tweet| %>
+  <div class="tweet">
+    <p><b>Posted <%= time_ago_in_words(tweet.created_at) %> ago</b></p>
+    <p class="tweet_messages"><%= tweet.message %></p>
+    <p class="tweet_messages">Posted By <em><%= tweet.user.user_name == current_user.user_name ? "me" : tweet.user.user_name %></em></p>
+    <div class="delete_tweet btn btn-danger btn-small" tweet_id= <%= tweet.id %> ><i class="icon-trash"></i></div>
+    <hr>
+  </div>
+<% end %>
+
+<script>
+  function delete_tweet () {
+    $('.delete_tweet').click(function() {  
+      $this = $(this);
+      var tweet_id = $this.attr("tweet_id");
+      $.ajax({
+          url: "tweets/destroy",
+          type: "DELETE",
+          data: {"tweet_id": tweet_id}
+      }).success(function(){
+          $this.closest(".tweet").remove();
+      });
+      return false;
+    });
+  }
+
+  delete_tweet();
+
+  $('form').submit(function() {  
+    var formData = $(this).serialize();
+    $.ajax({
+        url: $(this).attr('action'),
+        type: "POST",
+        data: formData,
+        dataType: "JSON"
+    }).success(function(data){
+        $('#tweet_message').val("").focus();
+        $('.tweets').prepend("<div class='tweet'><p><b>Posted "+data.time_ago_in_words+" ago</b></p><p class='tweet_messages'>"+data.message+"</p><p class='tweet_messages'>Posted By <em>me</em></p><div class='delete_tweet btn btn-danger btn-small' tweet_id="+data.id+"><i class='icon-trash'></i></div></div><hr>");
+        delete_tweet();
+    });
+    return false;
+  });
+</script>

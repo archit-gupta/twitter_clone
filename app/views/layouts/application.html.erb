@@ -7,8 +7,25 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+    <div class="navbar-inner" style="text-align:right">
 
-<%= yield %>
+        <div class="container" style="padding-top:10px;">
+          <%= link_to 'List Users', users_index_path, :style => "float:left; margin-right:10px" %>
 
+          <% if user_signed_in? %>
+            <%= link_to 'Home', root_path, :style => "float:left;border-left:1px solid #000;padding-left:10px;" %>
+            Logged in as <strong><%= current_user.email %></strong>.
+            <%= link_to 'Edit profile', edit_user_registration_path %> |
+            <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+          <% else %>
+            <%= link_to "Sign up", new_user_registration_path %> |
+            <%= link_to "Login", new_user_session_path %>
+          <% end %>
+        </div>
+    </div>
+    <%= render :partial => "shared/flash_messages" %>
+    <div class="main_body container">
+      <%= yield %>
+    </div> 
 </body>
 </html>
