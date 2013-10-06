@@ -5,27 +5,25 @@ class TweetsController < ApplicationController
   before_filter :check_user, only: [:destroy]
 
   def check_user
-    if current_user != Tweet.find(params[:id]).user
+    if current_user != Tweet.find(params[:tweet_id]).user
       flash[:alert] = "You are not authorized to access this page"
-      redirect_to root_path
+      return false
     end
   end
   
   def index
-    tweet_ids = current_user.followers.pluck("friend_id") + [current_user.id]
+    @user = (current_user.blank? ? false : current_user)
+    tweet_ids = @user.followers.pluck("friend_id") + [@user.id]
     @tweets = Tweet.order("created_at DESC").find_all_by_user_id(tweet_ids)
     @tweet = Tweet.new
-    @following = current_user.followers.count
-    @followers = Follower.where(:friend_id => current_user.id).count
-  end
-
-  def user_tweets
-    @tweets = current_user.tweets.order("created_at DESC")
+    @following = @user.followers.count
+    @followers = Follower.where(:friend_id => @user.id).count
   end
 
   def create
     if params[:tweet].present?
       @tweet = Tweet.new(params[:tweet]) 
+      @tweet.user_id = current_user.id
     else
       message = Tweet.find(params[:tweet_id]).message
       @tweet = Tweet.new(:message => message, :user_id => current_user.id)
@@ -42,6 +40,7 @@ class TweetsController < ApplicationController
   end
 
   def destroy
+    debugger
     @tweet = Tweet.find(params[:tweet_id])
     @tweet.destroy
 

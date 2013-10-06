@@ -1,11 +1,17 @@
 <div class="page-header">
-  <h1><%= @heading %></h1>
+  <h1>
+    <% if @user.present? %>
+      <%= params[:action] == "followers" ? "#{@user.full_name}'s followers" : "#{@user.full_name}'s followings" %>
+    <% else %>
+      Users List
+    <% end %>
+    </h1>
 </div>
 <table class="table table-striped">
   <thead>
     <tr>
       <th>Username</th>
-      <th>Actions</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -13,8 +19,12 @@
       <tr>
         <td><%= user.user_name %></td>
         <td>
-          <% if current_user.followers.exists?(:friend_id => user.id) %>
-            <%= link_to "UnFollow", followers_destroy_path(user.id), :class => 'btn btn-mini btn-danger', :Style => "color:#fff", :method=> :delete %>
+          <% if @user.present? %>
+            <% if @user.followers.exists?(:friend_id => user.id) %>
+              <%= link_to "UnFollow", followers_destroy_path(user.id), :class => 'btn btn-mini btn-danger', :Style => "color:#fff", :method=> :delete %>
+            <% elsif  %>
+              <%= link_to "Follow", followers_create_path(user.id), :class => 'btn btn-mini btn-primary', :Style => "color:#fff", :method=> :post %>
+            <% end %>
           <% else %>
             <%= link_to "Follow", followers_create_path(user.id), :class => 'btn btn-mini btn-primary', :Style => "color:#fff", :method=> :post %>
           <% end %>

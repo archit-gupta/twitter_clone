@@ -1,7 +1,7 @@
 TwitterClone::Application.routes.draw do
   get "users/index"
-  get "users/followers" => "users#followers", :as => "followers"
-  get "users/following" => "users#following", :as => "following"
+  get "users/followers/:id" => "users#followers", :as => "followers"
+  get "users/following/:id" => "users#following", :as => "following"
 
   post "followers/create/:id" => "followers#create", :as => "followers_create"
 
@@ -9,13 +9,17 @@ TwitterClone::Application.routes.draw do
 
   
 
-  get "tweets/user_tweets" => "tweets#user_tweets", :as => "user_tweets"
+  get "users/user_tweets/:id" => "users#user_tweets", :as => "user_tweets"
 
   post "tweets/create" => "tweets#create"
+
+  get "users/show/:id" => "users#show"
 
   devise_for :users
 
   resources :tweets
+
+  match "/:user_name" => "users#show"
 
 
   # The priority is based upon order of creation:
@@ -76,6 +80,8 @@ TwitterClone::Application.routes.draw do
       root :to => 'devise/sessions#new'
     end
   end
+
+  match '*path' => redirect('/')
 
   # See how all your routes lay out with "rake routes"
 

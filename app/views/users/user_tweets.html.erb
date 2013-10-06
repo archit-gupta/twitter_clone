@@ -1,0 +1,6 @@
+<div class="container">
+  <h2><%= "#{@user.user_name}'s Tweets" %></h2>
+  <div class="tweets">
+    <%= render :partial => "/tweets/tweet", :tweets => @tweets %>
+  </div>
+</div>

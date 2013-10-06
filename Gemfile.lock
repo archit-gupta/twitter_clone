@@ -52,6 +52,8 @@ GEM
       warden (~> 1.2.1)
     erubis (2.7.0)
     execjs (2.0.2)
+    friendly_id (4.0.10.1)
+      activerecord (>= 3.0, < 4.0)
     hike (1.2.3)
     i18n (0.6.5)
     journey (1.0.4)
@@ -133,6 +135,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   debugger
   devise
+  friendly_id
   jquery-rails
   mysql2
   rails (= 3.2.14)

@@ -1,0 +1,9 @@
+<div class="container">
+  <%= render :partial => "/tweets/profile", :tweets => @tweets %>
+  <div class="span6" >    
+    <div class="tweets">
+     <%= render :partial => "/tweets/tweet", :tweets => @tweets %>
+    </div>
+  </div>
+
+</div>
