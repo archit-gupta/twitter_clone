@@ -24,15 +24,22 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by_user_name(params[:user_name])
-    # @current = (current_user.blank? ? User.find_by_user_name(params[:user_name]) : current_user)
-    @tweets = Tweet.order("created_at DESC").find_all_by_user_id(@user.id)
+    if current_user.present? && current_user.friends.exists?(:user_name => params[:user_name])
+      @tweets = Tweet.order("created_at DESC").where(:user_id => @user.id )
+    else
+      @tweets = Tweet.order("created_at DESC").where("user_id = ? AND private = ?", @user.id, false)
+    end
     @following = @user.followers.count
     @followers = Follower.where(:friend_id => @user.id).count 
   end
 
   def user_tweets
     @user = User.find(params[:id])
-    @tweets = @user.tweets.order("created_at DESC")
+    if current_user.present? && current_user.friends.exists?(:user_name => @user.user_name)
+      @tweets = @user.tweets.order("created_at DESC").where(:user_id => @user.id )
+    else
+      @tweets = @user.tweets.order("created_at DESC").where("user_id = ? AND private = ?", @user.id, false)
+    end
   end
 
 end

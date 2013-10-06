@@ -39,6 +39,7 @@
         dataType: "JSON"
     }).success(function(data){
         $('#tweet_message').val("").focus();
+        $('#tweet_private').prop("checked", "");
         $('.tweets').prepend("<div class='tweet'><p><b>Posted "+data.time_ago_in_words+" ago</b></p><p class='tweet_messages'>"+data.message+"</p><p class='tweet_messages'>Posted By <em>me</em></p><div class='delete_tweet btn btn-danger btn-small' tweet_id="+data.id+"><i class='icon-trash'></i></div></div><hr>");
         delete_tweet();
     });
