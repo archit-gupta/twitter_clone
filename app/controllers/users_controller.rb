@@ -35,7 +35,7 @@ class UsersController < ApplicationController
 
   def user_tweets
     @user = User.find(params[:id])
-    if current_user.present? && current_user.friends.exists?(:user_name => @user.user_name)
+    if current_user.present? && current_user.friends.exists?(:id=> @user.id)
       @tweets = @user.tweets.order("created_at DESC").where(:user_id => @user.id )
     else
       @tweets = @user.tweets.order("created_at DESC").where("user_id = ? AND private = ?", @user.id, false)

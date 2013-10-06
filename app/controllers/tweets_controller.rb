@@ -25,7 +25,8 @@ class TweetsController < ApplicationController
       @tweet = Tweet.new(params[:tweet]) 
       @tweet.user_id = current_user.id
     else
-      message = Tweet.find(params[:tweet_id]).message
+      @retweet = Tweet.find(params[:tweet_id])
+      message = (current_user.friends.exists?(:id => @retweet.user_id) ? @retweet.message : nil)
       @tweet = Tweet.new(:message => message, :user_id => current_user.id)
     end
     respond_to do |format|
