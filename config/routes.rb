@@ -19,7 +19,7 @@ TwitterClone::Application.routes.draw do
 
   resources :tweets
 
-  match "/:user_name" => "users#show"
+  match "/:user_name" => "users#show", as: "show_user"
 
 
   # The priority is based upon order of creation:
