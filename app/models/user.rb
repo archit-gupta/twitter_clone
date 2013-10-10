@@ -20,4 +20,13 @@ class User < ActiveRecord::Base
 
   has_many :tweets, :dependent => :destroy
 
+  before_save :check_user_name
+
+  def check_user_name
+    if self.user_name_changed?
+        errors.add(:user_name, "can't be changed once set")
+        return false
+    end
+  end
+
 end
