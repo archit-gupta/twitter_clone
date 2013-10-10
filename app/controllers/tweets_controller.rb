@@ -41,7 +41,6 @@ class TweetsController < ApplicationController
   end
 
   def destroy
-    debugger
     @tweet = Tweet.find(params[:tweet_id])
     @tweet.destroy
 
