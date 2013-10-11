@@ -39,4 +39,6 @@ gem 'friendly_id'
 # gem 'capistrano'
 
 # To use debugger
-gem 'debugger'
+group :develoment do
+  gem 'debugger'
+end
