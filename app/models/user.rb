@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   before_save :check_user_name
 
   def check_user_name
-    if self.user_name_changed?
+    if !self.new_record? && self.user_name_changed?
         errors.add(:user_name, "can't be changed once set")
         return false
     end
