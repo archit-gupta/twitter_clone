@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
+ruby '1.9.3'
 gem 'rails', '3.2.14'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'mysql2'
 
 
 # Gems used only for assets and not required
@@ -39,6 +39,11 @@ gem 'friendly_id'
 # gem 'capistrano'
 
 # To use debugger
-group :develoment do
+group :development, :test do
+  gem 'mysql2'
   gem 'debugger'
+end
+group :production do
+  gem 'pg'
+  gem 'thin'
 end
